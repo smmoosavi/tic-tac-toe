@@ -1,0 +1,87 @@
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+@import "less.curious/for";
+
+@body-color: #000;
+@board-color: @gray-darker;
+@box-color: @gray-dark;
+@border-color: @gray-darker;
+@text-color: @gray-light;
+@border-width: 4px;
+@margin: 30px;
+
+body {
+  background-color: @body-color;
+}
+
+.make-board(@unit, @n) {
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: @board-color;
+  height: @n * @unit;
+  width: 2 * @n * @unit  + @margin;
+  border: @border-width @border-color solid;
+  .board {
+    float: left;
+    width: @n * @unit;
+    margin-left: @margin;
+    height: @n * @unit;
+  }
+  .status {
+    float: left;
+    margin: @border-width;
+    padding: @margin / 2;
+    width: @n * @unit - @margin - 2 * @border-width;
+    height: @n * @unit - @margin - 2 * @border-width;
+    background-color: @box-color;
+    color: @text-color;
+    font-family: Tahoma;
+    font-size: 80px;
+    text-align: center;
+  }
+  .row {
+    position: relative;
+    height: @unit;
+    clear: left;
+    float: left;
+    &:last-child:after {
+      content: " ";
+      clear: both;
+    }
+  }
+  .box {
+    position: relative;
+    float: left;
+    width: @unit - 2 * @border-width;
+    height: @unit - 2 * @border-width;
+    border: @border-width solid;
+    border-color: @border-color;
+    background-color: @box-color;
+    cursor: pointer;
+  }
+
+  .make-color(@color) {
+    &-player .box:hover {
+      opacity: 0.3;
+      background-color: @color;
+    }
+    &.box {
+      cursor: cell;
+      opacity: 1 !important;
+      background-color: @color !important;
+    }
+  }
+  .red {
+    .make-color(@brand-danger);
+  }
+  .blue {
+    .make-color(@brand-primary);
+  }
+
+}
+
+#board {
+  .make-board(100px, 3);
+}
+

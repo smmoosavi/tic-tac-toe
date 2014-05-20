@@ -1,0 +1,12 @@
+{
+    "name": "dot-and-box",
+    "devDependencies": {
+        "gulp": "^3.6.2",
+        "gulp-less": "^1.2.3"
+    },
+    "dependencies": {
+        "jquery": "^2.1.1",
+        "socket.io": "^0.9.16",
+        "underscore": "^1.6.0"
+    }
+}
