@@ -28,6 +28,15 @@ body {
   font-size: 80px;
   text-align: center;
 }
+#board .status .turn {
+  font-size: 40px;
+  -webkit-transition: opacity 0.15s;
+  -o-transition: opacity 0.15s;
+  transition: opacity 0.15s;
+}
+#board .status .hide {
+  opacity: 0;
+}
 #board .row {
   position: relative;
   height: 100px;

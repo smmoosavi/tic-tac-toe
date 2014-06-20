@@ -38,16 +38,19 @@ function Display() {
     display.setBox = function (x, y, playerID, turn) {
         if (turn == _player.pid) {
             _board.addClass(color[_player.pid] + '-player');
+            _status.find('.turn').removeClass('hide');
         } else {
             _board.removeClass(color[_player.pid] + '-player');
+            _status.find('.turn').addClass('hide');
         }
         boxes[x][y].addClass(color[playerID])
     };
     display.setPlayer = function (player) {
-        _status.text('start');
+        _status.text('start').append('<br><span class="turn hide">your turn</span>');
         _player = player;
         if (player.pid == 0) {
             _board.addClass(color[player.pid] + '-player');
+            _status.find('.turn').removeClass('hide');
         }
     };
     display.onCountDown = function (n) {
