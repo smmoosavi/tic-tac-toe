@@ -1,4 +1,4 @@
-var io = require('socket.io').listen(9898);
+var io = require('socket.io')(9898);
 var Server = require('./game-server');
 
 var idealSocket = null;
