@@ -4,6 +4,11 @@ var Server = require('./game-server');
 var idealSocket = null;
 
 io.on('connection', function (socket) {
+    socket.on('disconnect', function () {
+        if (idealSocket == socket) {
+            idealSocket = null;
+        }
+    });
     if (idealSocket == null) {
         console.log('ideal');
         idealSocket = socket;
