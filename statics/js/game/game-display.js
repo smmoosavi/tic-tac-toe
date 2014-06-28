@@ -6,6 +6,7 @@ function Display() {
     var _board = null;
     var _status = null;
     var _player = null;
+    var gone = false;
     display.init = function (board) {
         board.empty();
         _status = $('<div></div>').addClass('status').text('wait');
@@ -36,6 +37,9 @@ function Display() {
         });
     };
     display.setBox = function (x, y, playerID, turn) {
+        if(gone){
+            return;
+        }
         if (turn == _player.pid) {
             _board.addClass(color[_player.pid] + '-player');
             _status.find('.turn').removeClass('hide');
@@ -46,6 +50,9 @@ function Display() {
         boxes[x][y].addClass(color[playerID])
     };
     display.setPlayer = function (player) {
+        if(gone){
+            return;
+        }
         _status.text('start').append('<br><span class="turn hide">your turn</span>');
         _player = player;
         if (player.pid == 0) {
@@ -54,15 +61,25 @@ function Display() {
         }
     };
     display.onCountDown = function (n) {
+        if(gone){
+            return;
+        }
         _status.text(n);
     };
 
     display.end = function (winner) {
+        if(gone){
+            return;
+        }
         if (winner == _player.pid) {
             _status.text('WIN');
         } else {
             _status.text('LOSS');
         }
     };
+    display.opponentGone = function(){
+        gone = true;
+        _status.html('WIN<br><span class="gone">opponent gone</span>');
+    }
 
 }

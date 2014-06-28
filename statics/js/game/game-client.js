@@ -8,7 +8,6 @@ function Client() {
         var player = this;
         player.pid = pid;
         player.set = function (x, y) {
-            console.log(x, y);
             socket.emit('set', x, y)
         }
     }
@@ -26,6 +25,7 @@ function Client() {
         socket.on('start', onStarted);
         socket.on('update', onUpdate);
         socket.on('end', display.end);
+        socket.on('opponent-gone',display.opponentGone);
     };
     function onConnect() {
         $('#server-status').removeClass('text-danger').addClass('text-success');

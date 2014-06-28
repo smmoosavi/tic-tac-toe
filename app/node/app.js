@@ -4,21 +4,18 @@ var Server = require('./game-server');
 var idealSocket = null;
 
 io.on('connection', function (socket) {
+    var serverID = -1;
+    if (idealSocket == null) {
+        idealSocket = socket;
+    } else {
+        serverID = Server.createGame(socket, idealSocket);
+        idealSocket = null;
+    }
+
     socket.on('disconnect', function () {
         if (idealSocket == socket) {
             idealSocket = null;
         }
+        Server.onDisconnected(serverID, socket);
     });
-    if (idealSocket == null) {
-        console.log('ideal');
-        idealSocket = socket;
-    } else {
-        console.log('new game');
-        var server = new Server();
-        server.init();
-        server.addPlayer(socket);
-        server.addPlayer(idealSocket);
-        server.start();
-        idealSocket = null;
-    }
 });

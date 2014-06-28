@@ -34,6 +34,9 @@ body {
   -o-transition: opacity 0.15s;
   transition: opacity 0.15s;
 }
+#board .status .gone {
+  font-size: 30px;
+}
 #board .status .hide {
   opacity: 0;
 }

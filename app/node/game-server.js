@@ -1,10 +1,15 @@
 var Core = require('./game-core');
+var events = require('events');
 
-function Server() {
+var servers = {};
+var lastServerID = 0;
+
+function Server(serverID) {
     var server = this;
     var core = null;
     var lastID = 0;
     var players = [];
+    server.id = serverID;
     server.init = function () {
         core = new Core(server);
         core.init();
@@ -16,6 +21,7 @@ function Server() {
             core.set(x, y, pid);
         });
         lastID += 1;
+        console.log(pid, socket.id, serverID);
     };
 
     server.start = function () {
@@ -48,6 +54,40 @@ function Server() {
         players.forEach(function (player) {
             player.socket.emit('end', pid);
         });
+        if (servers[serverID]) {
+            delete servers[serverID];
+        }
+    };
+    Server.onDisconnected = function (socket) {
+        players.forEach(function (player) {
+            if (player.socket.id == socket.id) {
+                player['disconnected'] = true;
+                return;
+            }
+            if (player['disconnected']) {
+                return;
+            }
+            player.socket.emit('opponent-gone');
+        });
     };
 }
+Server.onDisconnected = function (serverID, socket) {
+    console.log(Object.keys(servers));
+    var server = servers[serverID];
+    if (server == undefined) {
+        return;
+    }
+    server.ondisconnect(socket);
+};
+Server.createGame = function (socket1, socket2) {
+    lastServerID++;
+    var serverID = lastServerID;
+    var server = new Server(serverID);
+    servers[serverID] = server;
+    server.init();
+    server.addPlayer(socket1);
+    server.addPlayer(socket2);
+    server.start();
+    return serverID;
+};
 module.exports = Server;
